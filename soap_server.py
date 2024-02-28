@@ -4,6 +4,13 @@ from pysimplesoap.server import SoapDispatcher, SOAPHandler
 def saludar(nombre):
     return "¡Hola, {}!".format(nombre)
 
+def SumaDosNumeros(numero1, numero2):
+    return numero1 + numero2
+
+def CadenaPalindromo(cadena):
+    cadena = cadena.replace(" ", "").lower()
+    return cadena == cadena[::-1]
+
 dispatcher = SoapDispatcher(
     "ejemplo-soap-server",
     location="http://localhost:8000/",
@@ -12,24 +19,27 @@ dispatcher = SoapDispatcher(
     trace=True,
     ns=True,
 )
+
 dispatcher.register_function(
     "Saludar",
     saludar,
     returns={"saludo": str},
     args={"nombre": str},
 )
-#Suma de dos numeros
-def SumaDosNumeros(num1, num2):
-    return num1 + num2
 
 dispatcher.register_function(
     "SumaDosNumeros",
     SumaDosNumeros,
-    returns={"resultado": float},
-    args={"numero1": float, "numero2": float},
+    returns={"resultado": int},
+    args={"numero1": int, "numero2": int},
 )
 
-
+dispatcher.register_function(
+    "CadenaPalindromo",
+    CadenaPalindromo,
+    returns={"es_palindromo": bool},
+    args={"cadena": str},
+)
 
 server = HTTPServer(("", 8000), SOAPHandler)
 server.dispatcher = dispatcher
