@@ -19,17 +19,17 @@ print(post_response.text)
 # buscar_nombre con p
 ruta_busNom = url + "buscar_nombre"
 bus_nom = requests.request(method="GET", url=ruta_busNom)
-print("Nombres que empiezan con 'P':")
+print("\nNombres que empiezan con 'P':")
 print(bus_nom.text)
 
 # contar_carreras
 ruta_contCarr = url + "contar_carreras"
 contar_carr = requests.request(method="GET", url=ruta_contCarr)
-print("Cantidad de estudiantes por carrera:")
+print("\nCantidad de estudiantes por carrera:")
 print(contar_carr.text)
 
 # contar_carreras
 ruta_TotalEst = url + "total_estudiantes"
 contar_estu = requests.request(method="GET", url=ruta_TotalEst)
-print("Total de estudiantes:")
+print("\nTotal de estudiantes:")
 print(contar_estu.text)

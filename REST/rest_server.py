@@ -3,10 +3,7 @@ import json
 import requests
 
 
-estudiantes = [
-    {
-        "id": 1,
-        "nombre": "Erick",
+estudiantes = [{"id": 1,"nombre": "Erick",
         "apellido": "Picavia",
         "carrera": "Ingenieria",
     },
@@ -157,6 +154,11 @@ def run_server(port = 8000):
     except KeyboardInterrupt:
         print('Apagando servidor web')
         httpd.socket.close()
+
+def do_DELETE(self):
+    if self.path=='/estudiantes':
+        self.send_response(200)
+        self.send_
 
 if __name__ == "__main__":
     run_server()
