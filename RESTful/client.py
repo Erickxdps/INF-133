@@ -53,3 +53,5 @@ print("\nTodas las carreras:\n", carr.text)
 url_economia = url + "/economia"
 economicos = requests.get(url_economia)
 print("\nEstudiantes de la carrera de economia:\n", economicos.text)
+
+
