@@ -1,20 +1,26 @@
 from flask import Blueprint, request, redirect, url_for
-from datetime import date
+
 # Importamos la vista de usuarios
 from views import user_view
 
 # Importamos el modelo de usuario
 from models.user_model import User
+# date
+from datetime import datetime
 
 # Un Blueprint es un objeto que agrupa
 # rutas y vistas
 user_bp = Blueprint("user", __name__)
 
 
-# Definimos las rutas "/" asociada a la funcion usuarios
-# que nos devuelve la vista de usuarios
+# Ruta de la página raíz redirige a la vista de usuarios
 @user_bp.route("/")
-def usuarios():
+def index():
+    return redirect(url_for("user.list_users"))
+
+
+@user_bp.route("/users")
+def list_users():
     # Obtenemos todos los usuarios
     users = User.get_all()
     # Llamamos a la vista de usuarios
@@ -23,71 +29,58 @@ def usuarios():
 
 # Definimos la ruta "/users" asociada a la función registro
 # que nos devuelve la vista de registro
-@user_bp.route("/users", methods=["GET", "POST"])
-def registro():
+@user_bp.route("/users/create", methods=["GET", "POST"])
+def create_user():
     if request.method == "POST":
         # Obtenemos los datos del formulario
         first_name = request.form["first_name"]
         last_name = request.form["last_name"]
         email = request.form["email"]
-        pasword = request.form["pasword"]
-        anio,mes,dia = map(int,request.form["date_born"].split("-"))
-        date_born = date(anio,mes,dia)
+        password = request.form["password"]
+        fecha_nac = datetime.strptime(request.form['fecha_nac'], '%Y-%m-%d').date()
         # Creamos un nuevo usuario
-        user = User(first_name, last_name,email,pasword,date_born)
+        user = User(first_name, last_name, email, password, fecha_nac)
         # Guardamos el usuario
         user.save()
-        # Redirigimos a la vista de usuarios
-        # llamamos al blue print "user" y a la función usuarios
-        return redirect(url_for("user.usuarios"))
+        return redirect(url_for("user.list_users"))
     # Llamamos a la vista de registro
     return user_view.registro()
-
-
-# Actualizar la información de un usuario por su id
-# primero recuperamos la información del usuario
-@user_bp.route("/users/<int:id>", methods=["GET"])
-def obtener_usuario(id):
-    # Obtenemos el usuario por su id
-    user = User.get_by_id(id)
-    if not user:
-        return "Usuario no encontrado", 404
-    return user_view.actualizar(user)
 
 
 # Actualizamos la información del usuario por su id
 # Ya estamos en la vista de actualizar
 # por lo que obtenemos los datos del formulario
 # y actualizamos la información del usuario
-@user_bp.route("/users/<int:id>", methods=["POST"])
-def actualizar(id):
+@user_bp.route("/users/<int:id>/update", methods=["GET", "POST"])
+def update_user(id):
     user = User.get_by_id(id)
     if not user:
         return "Usuario no encontrado", 404
-    # Obtenemos los datos del formulario
-    first_name = request.form["first_name"]
-    last_name = request.form["last_name"]
-    email = request.form["email"]
-    pasword = request.form["pasword"]
-    anio,mes,dia = map(int,request.form["date_born"].split("-"))
-    date_born = date(anio,mes,dia)
-    
-    # Actualizamos los datos del usuario
-    user.first_name = first_name
-    user.last_name = last_name
-    user.email = email
-    user.pasword = pasword
-    user.date_born = date_born
-    # Guardamos los cambios
-    user.update()
-    return redirect(url_for("user.usuarios"))
+    if request.method == "POST":
+        # Obtenemos los datos del formulario
+        first_name = request.form["first_name"]
+        last_name = request.form["last_name"]
+        email = request.form["email"]
+        password = request.form["password"]
+        fecha_nac = datetime.strptime(request.form['fecha_nac'], '%Y-%m-%d').date()
+        
+        # Actualizamos los datos del usuario
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.password = password
+        user.fecha_nac = fecha_nac
+        # Guardamos los cambios
+        user.update()
+        return redirect(url_for("user.list_users"))
+    return user_view.actualizar(user)
 
 
-@user_bp.route("/users/<int:id>", methods=["POST"])
+@user_bp.route("/eliminar/<int:id>")
 def eliminar(id):
     # Obtenemos el usuario por su id
     user = User.get_by_id(id)
     if not user:
         return "Usuario no encontrado", 404
     User.delete(user)
-    return redirect(url_for("user.usuarios"))
+    return redirect(url_for("user.list_users"))

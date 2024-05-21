@@ -2,17 +2,17 @@
 # que renderiza un template de Jinja2.
 from flask import render_template
 
+# La función `registro` renderiza el
+# template `registro.html`
+def registro():
+    return render_template("registro.html", 
+                        title="Registro de usuarios")
 
 # La función `usuarios` recibe una lista de
 # usuarios y renderiza el template `usuarios.html`
 def usuarios(users):
-    return render_template("usuarios.html", users=users, title="Lista de usuarios")
-
-
-# La función `registro` renderiza el
-# template `registro.html`
-def registro():
-    return render_template("registro.html", title="Registro de usuarios")
+    return render_template("usuarios.html", users=users,
+                        title="Lista de usuarios")
 
 
 # La función `actualizar` recibe un usuario

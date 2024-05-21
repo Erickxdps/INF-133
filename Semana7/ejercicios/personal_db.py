@@ -3,12 +3,11 @@ import sqlite3
 
 # Crear conexión a la base de datos
 conn = sqlite3.connect("personal.db")
-
+# tabla cargos
 conn.execute(
         """
         CREATE TABLE CARGOS
-        (
-        id INTEGER PRIMARY KEY,
+        (id INTEGER PRIMARY KEY,
         nombre TEXT NOT NULL,
         nivel TEXT NOT NULL,
         fecha_creacion TEXT NOT NULL
@@ -16,7 +15,21 @@ conn.execute(
         """
     )
 print("La tabla CARGOS ya existe")
+# tabla departamentos
+conn.execute(
+        """
+        CREATE TABLE DEPARTAMENTOS
+        (
+        id INTEGER PRIMARY KEY,
+        nombre TEXT NOT NULL,
+        fecha_creacion TEXT NOT NULL
+        );
+        """
+    )
+print("La tabla DEPARTAMENTOS ya existe")
+    
 
+# tabla salarios
 conn.execute(
         """
         CREATE TABLE SALARIOS
@@ -32,20 +45,7 @@ conn.execute(
         """
     )
 print("La tabla SALARIOS ya existe")
-
-conn.execute(
-        """
-        CREATE TABLE DEPARTAMENTOS
-        (
-        id INTEGER PRIMARY KEY,
-        nombre TEXT NOT NULL,
-        fecha_creacion TEXT NOT NULL
-        );
-        """
-    )
-print("La tabla DEPARTAMENTOS ya existe")
-    
-
+# tabla empleados
 conn.execute(
         """
         CREATE TABLE EMPLEADOS
@@ -65,38 +65,38 @@ conn.execute(
     )
 print("La tabla EMPLEADOS ya existe")
 
+conn.execute(
+    """
+    INSERT INTO DEPARTAMENTOS(nombre, fecha_creacion) 
+    VALUES ("Ventas", '10-04-2020')
+    """
+)
 
 
 conn.execute(
     """
     INSERT INTO DEPARTAMENTOS(nombre, fecha_creacion) 
-    VALUES ("Ventas", 10-04-2020)
-    """
-)
-conn.execute(
-    """
-    INSERT INTO DEPARTAMENTOS(nombre, fecha_creacion) 
-    VALUES ("Marketing",11-04-2020)
+    VALUES ("Marketing",'11-04-2020')
     """
 )
 
 conn.execute(
     """
     INSERT INTO CARGOS(nombre,nivel,fecha_creacion) 
-    VALUES ("Gerente de ventas","Senior",10-04-2020)
+    VALUES ("Gerente de ventas","Senior",'10-04-2020')
     """
 )
 
 conn.execute(
     """
     INSERT INTO CARGOS(nombre,nivel,fecha_creacion) 
-    VALUES ("Analista de Marketing","Junior",11-04-2020)
+    VALUES ("Analista de Marketing","Junior",'11-04-2020')
     """
 )
 conn.execute(
     """
     INSERT INTO CARGOS(nombre,nivel,fecha_creacion) 
-    VALUES ("Representante de ventas","Junior",12-04-2020)
+    VALUES ("Representante de ventas","Junior",'12-04-2020')
     """
 )
 

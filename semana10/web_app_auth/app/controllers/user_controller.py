@@ -19,6 +19,29 @@ user_bp = Blueprint("user", __name__)
 def index():
     return redirect(url_for("user.login"))
 
+# Ruta para el inicio de sesión
+@user_bp.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        user = User.get_user_by_username(username)
+        if user and check_password_hash(user.password_hash, password):
+            login_user(user)
+            flash("Inicio de sesión exitoso", "success")
+            return redirect(url_for("user.list_users"))
+        else:
+            flash("Nombre de usuario o contraseña incorrectos", "error")
+    return user_view.login()
+
+# Ruta para cerrar sesión
+@user_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Sesión cerrada exitosamente", "success")
+    return redirect(url_for("user.login"))
+
 
 @user_bp.route("/users")
 @login_required
@@ -88,26 +111,3 @@ def delete_user(id):
     return redirect(url_for("user.list_users"))
 
 
-# Ruta para el inicio de sesión
-@user_bp.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        user = User.get_user_by_username(username)
-        if user and check_password_hash(user.password_hash, password):
-            login_user(user)
-            flash("Inicio de sesión exitoso", "success")
-            return redirect(url_for("user.list_users"))
-        else:
-            flash("Nombre de usuario o contraseña incorrectos", "error")
-    return user_view.login()
-
-
-# Ruta para cerrar sesión
-@user_bp.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    flash("Sesión cerrada exitosamente", "success")
-    return redirect(url_for("user.login"))

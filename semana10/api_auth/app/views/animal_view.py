@@ -1,3 +1,4 @@
+
 def render_animal_list(animals):
     # Representa una lista de animales como una lista de diccionarios
     return [

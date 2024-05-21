@@ -3,7 +3,7 @@
 {% block content %}
 <h2 class="subtitle is-2">Actualizar Usuario</h2>
 
-<form method="post">
+<form method="post" action="/users/{{ user.id }}/update">
     <div class="field">
         <label for="first_name">Nombre:</label>
         <div class="control">
@@ -18,27 +18,30 @@
             required class="input" value="{{ user.last_name }}">
         </div>
     </div>
+
     <div class="field">
         <label for="email">Email:</label>
         <div class="control">
-            <input type="email" id="email" name="email" 
+            <input type="text" id="email" name="email" 
             required class="input" value="{{ user.email }}">
         </div>
     </div>
     <div class="field">
-        <label for="pasword">Contrasenia:</label>
+        <label for="password">Contraseña:</label>
         <div class="control">
-            <input type="password" id="pasword" name="pasword" 
-            required class="input" value="{{ user.pasword }}">
+            <input type="password" id="password" name="password" 
+            required class="input" value="{{ user.password }}">
         </div>
     </div>
     <div class="field">
-        <label for="date_born">Fecha de Nacimiento:</label>
+        <label for="fecha_nac">Fecha de nacimiento:</label>
         <div class="control">
-            <input type="date" id="date_born" name="date_born" 
-            required class="input" value="{{ user.date_born }}">
+            <input type="date" id="fecha_nac" name="fecha_nac" 
+            required class="input" value="{{ user.fecha_nac }}">
         </div>
     </div>
+
+
     <input type="submit" value="Actualizar" class="button is-primary">
-</form>
+
 {% endblock %}
